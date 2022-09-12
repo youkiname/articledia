@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block title %}Edit {{ article.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <div class="d-flex">
+        <h1>{{ article.title }}</h1>
+        <a href="{% url 'edit_article' article.id %}">Edit</a>
+    </div>
+
+    {% for chapter in article.active_chapters %}
+        {% if chapter.id != chapter_id %}
+        <div class="d-flex align-items-stretch">
+            <h3>{{ chapter.title }}</h3>
+            <a href="{% url 'edit_chapter' article.id chapter.id %}">Edit</a>
+        </div>
+        <p>{{ chapter.text }}</p>
+        {% else %}
+        <form action="{% url 'update_chapter' article.id chapter.id %}" method="post">
+            {% csrf_token %}
+            <hr>
+            <h3><input type="text" name="title" value="{{ chapter.title }}"></h3>
+            <textarea
+                name="text"
+                onkeyup="textAreaAdjust(this)"
+                onclick="textAreaAdjust(this)"
+                class="form-control chapter_text"
+                style="height: 150px">{{ chapter.text }}</textarea>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <hr>
+        </form>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

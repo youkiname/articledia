@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+    <div>
+        <p>Created: {{ article.created_at }}</p>
+        <p>Edited: {{ article.updated_at }}</p>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'editing_history' article.id %}">Editing History</a>
+        {% endif %}
+    </div>
+    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <div class="d-flex">
+        <h1>{{ article.title }}</h1>
+        <a href="{% url 'edit_article' article.id %}">Edit</a>
+    </div>
+
+    {% for chapter in article.active_chapters %}
+        <div class="d-flex align-items-stretch">
+            <h3>{{ chapter.title }}</h3>
+            <a href="{% url 'edit_chapter' article.id chapter.id %}">Edit</a>
+        </div>
+
+        <p>{{ chapter.text }}</p>
+    {% endfor %}
+{% endblock %}

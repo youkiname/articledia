@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+{% block title %}Create Article{% endblock %}
+
+{% block content %}
+    <form action="{% url 'store_article' %}" method="post">
+        {% csrf_token %}
+        <h1>
+            <input name="title" id="article_title" value="Article Title">
+        </h1>
+        <div class="chapters" id="chapters">
+            <div class="chapter">
+                <hr>
+                <h3><input name="chapter_title[]" class="chapter_title" value="New Chapter"></h3>
+                <textarea
+                name="chapter_text[]" 
+                class="form-control chapter_text"
+                style="height: 150px">Chapter Text</textarea>
+            </div>
+        </div>
+        <div>
+            <button id="add_chapter_button" class="btn btn-secondary" type="button">Add Chapter</button>
+            <button type="submit" class="btn btn-primary">Create Article</button>
+        </div>
+    </form>
+    <script>
+        let chapterId = 1;
+        const chaptersList = document.getElementById('chapters')
+        const addChapterButton = document.getElementById('add_chapter_button')
+        addChapterButton.addEventListener('click', event => {
+            const chapter = document.getElementsByClassName("chapter")[0].cloneNode(true);
+            const chapterTitleInput = chapter.getElementsByClassName('chapter_title')[0];
+            chapterId += 1;
+            chapterTitleInput.value = chapterTitleInput.value.replace('1', chapterId)
+            chaptersList.appendChild(chapter);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+        .wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 90%;
+        }
+        .form-control-dark {
+            border-color: var(--bs-gray);
+        }
+        .form-control-dark:focus {
+            border-color: #fff;
+            box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+        }
+        .text-small {
+            font-size: 85%;
+        }
+        .dropdown-toggle {
+            outline: 0;
+        }
+    </style>
+    <script>
+        function textAreaAdjust(element) {
+            element.style.height = "1px";
+            element.style.height = (25+element.scrollHeight)+"px";
+        }
+
+        function removeParent(e) {
+            e.target.parentElement.parentElement.remove();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <span class="fs-4">Articledia</span>
+            </a>
+            <form action="{% url 'index' %}" method="get" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search"
+                       name="q" value="{{ search_query }}">
+            </form>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="{% url 'create_article' %}" class="nav-link">Create Article</a></li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item"><a href="#" class="nav-link">Hello, {{ request.user.username }}</a></li>
+                <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </header>
+    </div>
+    <div class="wrapper">
+        <div class="container" style="flex: 1 0 auto">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="container" style="flex: 0 0 auto">
+            <footer class="py-3 my-4">
+                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+                </ul>
+                <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

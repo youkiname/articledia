@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+
+{% block title %}History {{ article.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+    <div class="d-flex flex-row">
+    <p style="margin-right: 15px;">Created: {{ article.created_at }}</p>
+    <p>Edited: {{ article.updated_at }}</p>
+    </div>
+    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <h1>{{ article.title }}</h1>
+    <hr>
+    {% for index, chapters in article.editing_history.items %}
+        <div class="d-flex flex-row" style="overflow-x: auto; width: 100%; height: 30rem;">
+        {% for chapter in chapters %}
+            <div class="card" style="width: 48rem; min-width: 24rem; margin-right: 5px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ chapter.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ chapter.created_at }}</h6>
+                    <p class="card-text"
+                       style="max-height: 24rem;overflow: hidden;"
+                    >{{ chapter.text }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+
+{% block title %}Edit {{ article.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+<form action="{% url 'update_article' article.id %}" method="post">
+    {% csrf_token %}
+    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <h1><input type="text" name="title" value="{{ article.title }}"></h1>
+    {% for chapter in article.chapter_set.all %}
+        <h3>{{ chapter.title }}</h3>
+        <p>{{ chapter.text }}</p>
+    {% endfor %}
+    <div class="chapters" id="chapters">
+            <div class="chapter" hidden>
+                <hr>
+                <div class="d-flex">
+                    <h3><input name="chapter_title[]" class="chapter_title"></h3>
+                    <button type="button" class="btn-close" aria-label="Close" onclick="removeParent(event)"></button>
+                </div>
+                <textarea
+                name="chapter_text[]"
+                class="form-control chapter_text"
+                style="height: 150px">Chapter Text</textarea>
+            </div>
+    </div>
+    <button id="add_chapter_button" class="btn btn-secondary" type="button">Add Chapter</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<script>
+    const chaptersList = document.getElementById('chapters')
+    const addChapterButton = document.getElementById('add_chapter_button')
+    addChapterButton.addEventListener('click', event => {
+        const chapter = document.getElementsByClassName("chapter")[0].cloneNode(true);
+        chapter.hidden = false;
+        const chapterTitleInput = chapter.getElementsByClassName('chapter_title')[0];
+        chapterTitleInput.value = "New Chapter";
+        chaptersList.appendChild(chapter);
+    });
+</script>
+{% endblock %}
