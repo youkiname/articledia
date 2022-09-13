@@ -16,6 +16,8 @@ def save_article_image(request_file) -> str:
 
 
 def check_file_extension(request_file) -> bool:
+    if not request_file:
+        return False
     return get_file_extension(request_file) in ['.jpg', '.jpeg', '.png']
 
 
@@ -26,7 +28,7 @@ def create_notifications(editor: BrowserData, article: Article) -> None:
             user=bundle.user,
             editor=editor,
             article=article,
-            text=f"Статья '{article.title}' была изменена {now}",
+            text=f"Article '{article.title}' was changed {now}",
         )
 
 

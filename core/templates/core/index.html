@@ -6,25 +6,24 @@
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     {% if articles %}
     {% for article in articles %}
-        <div class="col">
-            <div class="card" style="width: 24rem;">
-                <img src="{{ article.image_url }}" class="card-img-top" onerror="this.onerror=null; this.src='/static/core/not_found.jpg'">
-                <div class="card-body">
-                    <h5 class="card-title">{{ article.title }}</h5>
-                    <p class="card-text" 
-                    style="max-height: 14rem;overflow: hidden;"
-                    >{{ article.get_abstract }}</p>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <a href="{% url 'detail' article.id %}" class="btn btn-primary">Read</a>
-                        <span>{{ article.human_created_at }} #{{ article.id }}</span>
-                    </div>
+    <div class="col">
+        <div class="card" style="width: 24rem;">
+            <img src="{{ article.image_url }}" class="card-img-top" style="max-height: 200px;"
+                onerror="this.onerror=null; this.src='/static/core/not_found.jpg'">
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text" style="max-height: 14rem;overflow: hidden;">{{ article.get_abstract }}</p>
+                <div class="d-flex align-items-center justify-content-between">
+                    <a href="{% url 'detail' article.id %}" class="btn btn-primary">Read</a>
+                    <span>{{ article.human_created_at }} #{{ article.id }}</span>
                 </div>
             </div>
         </div>
+    </div>
     {% endfor %}
 
     {% else %}
-        <p>No articles are available.</p>
+    <p>No articles are available.</p>
     {% endif %}
 </div>
 

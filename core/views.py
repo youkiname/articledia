@@ -59,12 +59,14 @@ def create_article(request):
 @has_access(['creating'])
 def store_article(request):
     title = request.POST['title']
-    image = request.FILES['image']
+    image = request.FILES.get('image', None)
     chapter_titles = request.POST.getlist('chapter_title[]')
     chapter_texts = request.POST.getlist('chapter_text[]')
-    if not title or not check_file_extension(image):
+    if not title:
         return redirect('create_article')
-    image_filename = save_article_image(image)
+    image_filename = 'not_found.jpg'
+    if image and check_file_extension(image):
+        image_filename = save_article_image(image)
     creator = get_or_create_browser_data(request)
     article = Article.objects.create(
         image_filename=image_filename,
@@ -150,9 +152,9 @@ def editing_history(request, article_id: int):
 
 @login_required
 def login_history(request):
-    login_dates = LoginDate.objects.filter(user=request.user).all()
+    login_dates = LoginDate.objects.filter(user=request.user).order_by('-date')
     display_viewed = request.GET.get('display_viewed', False)
-    notifications = EditingNotification.objects.filter(user=request.user)
+    notifications = EditingNotification.objects.filter(user=request.user).order_by('-id')
     if not display_viewed:
         notifications = notifications.filter(viewed=False)
     return render(request, 'core/login_history.html', {
