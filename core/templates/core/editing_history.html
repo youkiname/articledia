@@ -3,21 +3,29 @@
 {% block title %}History {{ article.title }}{% endblock %}
 
 {% block content %}
-{% load static %}
     <div class="d-flex flex-row">
-    <p style="margin-right: 15px;">Created: {{ article.created_at }}</p>
-    <p>Edited: {{ article.updated_at }}</p>
+        <p style="margin-right: 15px;">Created: {{ article.created_at }}</p>
+        <p style="margin-right: 15px;">Edited: {{ article.updated_at }}</p>
+        <p>Creator IP: <a href="{% url 'ip_actions' %}?ip={{ article.creator_ip }}">{{ article.creator_ip }}</a></p>
     </div>
-    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <img src="{{ article.image_url }}" style="width: 50%; max-width: 500px" onerror="this.onerror=null; this.src='/static/core/not_found.jpg'">
     <h1>{{ article.title }}</h1>
     <hr>
     {% for index, chapters in article.editing_history.items %}
-        <div class="d-flex flex-row" style="overflow-x: auto; width: 100%; height: 30rem;">
+        <div class="d-flex flex-row" style="overflow-x: auto; overflow-y: hidden; width: 100%; height: 32rem;">
         {% for chapter in chapters %}
             <div class="card" style="width: 48rem; min-width: 24rem; margin-right: 5px;">
+                <div class="card-header">
+                    {% if chapter.active %}
+                    <span>Active</span>
+                    {% else %}
+                    <a href="{% url 'activate_chapter' chapter.id %}">Activate</a>
+                    {% endif %}
+                    <span> #{{ chapter.id }}</span>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ chapter.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ chapter.created_at }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ chapter.created_at }} by <a href="{% url 'ip_actions' %}?ip={{ chapter.creator_ip }}">{{ chapter.creator_ip }}</a></h6>
                     <p class="card-text"
                        style="max-height: 24rem;overflow: hidden;"
                     >{{ chapter.text }}</p>

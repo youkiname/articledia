@@ -3,8 +3,7 @@
 {% block title %}Edit {{ article.title }}{% endblock %}
 
 {% block content %}
-{% load static %}
-    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <img src="{{ article.image_url }}" style="width: 50%; max-width: 500px" onerror="this.onerror=null; this.src='/static/core/not_found.jpg'">
     <div class="d-flex">
         <h1>{{ article.title }}</h1>
         <a href="{% url 'edit_article' article.id %}">Edit</a>

@@ -3,8 +3,10 @@
 {% block title %}Create Article{% endblock %}
 
 {% block content %}
-    <form action="{% url 'store_article' %}" method="post">
+    <form action="{% url 'store_article' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <h3>Image</h3>
+        <input name="image" type="file" accept=".jpg, .jpeg, .png" class="mb-4">
         <h1>
             <input name="title" id="article_title" value="Article Title">
         </h1>

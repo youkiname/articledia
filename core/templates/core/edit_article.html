@@ -3,10 +3,9 @@
 {% block title %}Edit {{ article.title }}{% endblock %}
 
 {% block content %}
-{% load static %}
 <form action="{% url 'update_article' article.id %}" method="post">
     {% csrf_token %}
-    <img src="{% static 'core/not_found.png' %}" class="img-fluid">
+    <img src="{{ article.image_url }}" style="width: 50%; max-width: 500px" onerror="this.onerror=null; this.src='/static/core/not_found.jpg'">
     <h1><input type="text" name="title" value="{{ article.title }}"></h1>
     {% for chapter in article.active_chapters %}
     <h3>{{ chapter.title }}</h3>

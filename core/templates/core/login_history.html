@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+
+{% block title %}Login History{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 50%;">
+    <h3 class="text-center mb-5">Notifications</h3>
+    <div class="d-flex">
+        {% if notifications|length > 0 %}
+        <a href="{% url 'mark_notifications_as_viewed' %}" style="margin-right: 10px">Mark all as viewed</a>
+        {% endif %}
+
+        {% if display_viewed %}
+        <a href="{% url 'login_history' %}">Hide viewed</a>
+        {% else %}
+        <a href="{% url 'login_history' %}?display_viewed=1">Display viewed</a>
+        {% endif %}
+    </div>
+
+    <ul>
+        {% for notification in notifications %}
+        <li>{{ notification.text }} by
+            <a href="{% url 'ip_actions' %}?ip={{ notification.editor.ip }}">{{ notification.editor.ip }}</a>
+            [<a href="{% url 'editing_history' notification.article.id %}">Show</a>]</li>
+        {% endfor %}
+    </ul>
+    <h3 class="text-center mb-5">Login History</h3>
+    <ul>
+        {% for login_date in login_dates %}
+        <li>{{ login_date.date }} by <a href="{% url 'ip_actions' %}?ip={{ login_date.browser_data.ip }}">{{ login_date.browser_data.ip }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
