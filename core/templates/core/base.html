@@ -39,6 +39,18 @@
         function removeParent(e) {
             e.target.parentElement.parentElement.remove();
         }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            fetch('http://localhost:8001/add-url-auto/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    url: window.location.href
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        });
     </script>
 </head>
 <body>
@@ -63,7 +75,7 @@
         </header>
     </div>
     <div class="wrapper">
-        <div class="container" style="flex: 1 0 auto">
+        <div class="container" style="flex: 1 0 auto" id="content">
             {% block content %}
             {% endblock %}
         </div>
